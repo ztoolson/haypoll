@@ -1,16 +1,15 @@
-defmodule Haypoll.Poll do
+defmodule Haypoll.Entry do
   use Haypoll.Web, :model
 
-  schema "polls" do
+  schema "entries" do
     field :title, :string
-    field :closed, :boolean, default: false
-
-    has_many :entries, Haypoll.Entry, on_delete: :delete_all
+    field :votes, :integer, default: 0
+    belongs_to :poll, Haypoll.Poll
 
     timestamps
   end
 
-  @required_fields ~w(title closed)
+  @required_fields ~w(title votes)
   @optional_fields ~w()
 
   @doc """
