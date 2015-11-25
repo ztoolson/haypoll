@@ -23,7 +23,7 @@ config :logger, level: :info
 # Configure your database for Heroku
 config :haypoll, Haypoll.Repo,
   adapter: Ecto.Adapters.Postgres,
-  user: System.get_env("DATABASE_URL"),
+  url: System.get_env("DATABASE_URL"),
   poll_size: 20
 
 # ## SSL Support
