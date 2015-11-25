@@ -2,6 +2,7 @@
 import { Socket } from "deps/phoenix/web/static/js/phoenix"
 
 export var LivePoller = {
+  chart: null,
   init() {
     // If the element we're expecting doesn't exist on the page,
     // just exit out of the whole thing
@@ -10,6 +11,8 @@ export var LivePoller = {
     let pollChannel = this.setupPollChannel()
     // Set up each of the voting buttons
     this.setupVoteButtons(pollChannel)
+    // And setup our graph
+    this.setupGraph()
   },
   createSocket() {
     // Open up a new websocket connection
@@ -36,6 +39,8 @@ export var LivePoller = {
     pollChannel.on("new_vote", vote => {
       // Update the voted item's display
       self.updateDisplay(vote.entry_id)
+      // And update the graph, since we have new data
+      self.updateGraph()
     })
     // Finally, join the channel we created. On success, let the console know that we joined.
     // On failure, tell us why it errored out.
@@ -82,5 +87,44 @@ export var LivePoller = {
       // And then push a new_vote message with the entry id onto the channel
       pollChannel.push("new_vote", { entry_id: entryId })
     })
+  },
+  setupGraph() {
+    // Store the current object for use later
+    var self = this
+    // Load the visualization library and corechart packages
+    google.load("visualization", "1", { packages: ["corechart"] })
+    // And setup a callback for when the load completes
+    google.setOnLoadCallback(() => {
+      // Create a new pie chart; we can't use jquery for this
+      self.chart = new google.visualization.PieChart(document.getElementById("my-chart"))
+      // And update the graph from the new data
+      self.updateGraph()
+    })
+  },
+  updateGraph() {
+    // Grab the current state of data for the graph
+    let data = this.getGraphData()
+    // Convert the data into a Google Charts appropriate format
+    var convertedData = google.visualization.arrayToDataTable(data)
+    // And draw the graph, and we'll make it 3d and fancy
+    this.chart.draw(convertedData, { title: "Poll", is3D: true })
+  },
+  getGraphData() {
+    // Set up our legen
+    var data = [["Choice", "Votes"]]
+    // And iterate over each list item
+    $("li.entry").each(function() {
+      // Store the current item
+      let li = $(this)
+      // Grab the title
+      let title = li.find(".title").text()
+      // And grab the integer version of the number of votes
+      let votes = +(li.find(".votes").text())
+      // And push the result onto our array
+      data.push([title, votes])
+    })
+
+    // And return our finished array of data out
+    return data
   }
 }
