@@ -33,6 +33,6 @@
 </div>
 
 <%= link "Edit", to: poll_path(@conn, :edit, @poll) %>
-<%= link "Back", to: poll_path(@conn, :index) %>
+<%= link "Polls", to: poll_path(@conn, :index) %>
 
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>

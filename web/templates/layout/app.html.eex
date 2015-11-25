@@ -7,17 +7,34 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Hello Phoenix!</title>
+    <title>Haypoll</title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
   </head>
 
   <body>
     <div class="container" role="main">
       <div class="header">
-        <ul class="nav nav-pills pull-right">
-          <li><a href="http://www.phoenixframework.org/docs">Get Started</a></li>
-        </ul>
-        <span class="logo"></span>
+				<nav class="navbar navbar-default">
+					<div class="navbar-container">
+						<div class="navbar-header">
+							<button class="navbar-toggle collapsed" data-target="#bs-navbar-collapse-1" data-toggle="collapse" type="button">
+								<span class="sr-only">Toggle Navigation</span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+							</button>
+							<div class="navbar-brand">
+                <%= link "HayPoll", to: poll_path(@conn, :new) %>
+							</div>
+						</div>
+						<div class="collapse navbar-collapse" id="bs-navbar-collapse-1">
+							<ul class="nav navbar-nav navbar-right">
+								<li>
+                  <%= link "All Polls", to: poll_path(@conn, :index) %>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</nav>
       </div>
 
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
