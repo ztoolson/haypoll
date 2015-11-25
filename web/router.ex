@@ -16,7 +16,7 @@ defmodule Haypoll.Router do
   scope "/", Haypoll do
     pipe_through :browser # Use the default browser stack
 
-    get "/", PageController, :index
+    get "/", PollController, :new
     resources "/polls", PollController
   end
 
