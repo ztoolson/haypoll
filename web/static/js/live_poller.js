@@ -42,6 +42,17 @@ export var LivePoller = {
       // And update the graph, since we have new data
       self.updateGraph()
     })
+    // Set up a hander for when the channel receives a close message
+    pollChannel.on("close", status => {
+      if (status.closed) {
+        $("a.vote").addClass("hidden")
+        $("poll-closed").text("true")
+      }
+      else {
+        $("a.vote").removeClass("hidden")
+        $("poll-closed").text("false")
+      }
+    })
     // Finally, join the channel we created. On success, let the console know that we joined.
     // On failure, tell us why it errored out.
     pollChannel

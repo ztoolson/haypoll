@@ -20,7 +20,7 @@
         <li class="entry" data-entry-id="<%= entry.id %>">
           <span class="votes"><%= entry.votes %></span> votes:
           <span class="title"><%= entry.title %></span>
-          <%= link "Vote", to: "#", class: "btn btn-info vote" %>
+          <%= link "Vote", to: "#", class: "btn btn-info vote #{ if @poll.closed, do: "hidden" }" %>
         </li>
       <% end %>
     </ul>
